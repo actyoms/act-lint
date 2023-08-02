@@ -13,4 +13,6 @@ regex = "1.9.1"
 serde = { version = "1.0.178", features = ["derive"] }
 serde_valid = { version = "0.16.3", features = ["yaml", "serde_yaml"] }
 serde_with = "3.1.0"
+syn = "2.0.28"
 serde_yaml = "0.9.25"
+act-derive = { path = "../act-derive" }

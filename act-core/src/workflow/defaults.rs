@@ -32,16 +32,18 @@ impl<'de> Visitor<'de> for DefaultsVisitor {
     where
         A: MapAccess<'de>,
     {
-        while let Some(key) = map.next_key::<String>()? {
-            return match key.as_str() {
+        let key = map.next_key::<String>()?;
+        if let Some(key) = key {
+            match key.as_str() {
                 "run" => map
                     .next_value::<Run>()
                     .map(|run| Defaults { run })
                     .and_then(|d| d.validate().map(|_| d).map_err(de::Error::custom)),
                 _ => Err(de::Error::unknown_field(&key, &["run"])),
-            };
+            }
+        } else {
+            Err(de::Error::missing_field("run"))
         }
-        Err(de::Error::missing_field("run"))
     }
 }
 

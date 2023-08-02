@@ -1,113 +1,101 @@
-use crate::{error_expression, Error};
-use lazy_static::lazy_static;
-use regex::Regex;
-use serde::de::{Deserialize, Deserializer, Visitor};
-use serde::ser::{Serialize, Serializer};
 use std::fmt;
+use std::str::FromStr;
 
-lazy_static! {
-    static ref RE: Regex = Regex::new(r"^.*\$\{\{(.|[\r\n])*}}.*$").unwrap();
-}
+use serde_yaml::from_str;
 
-/// A EnvStringExpression or map of environment variables
-#[derive(Debug, Eq, PartialEq)]
+use act_derive::UntaggedDeserialize;
+
+#[allow(unused_imports)]
+use crate::expression::{IN_STRING_PATTERN, InString};
+
+/// A [InString] expression or map of environment variables
+#[derive(Debug, Eq, PartialEq, serde::Serialize, UntaggedDeserialize)]
+#[visitor(EnvVisitor)]
+#[serde(untagged)]
 pub enum Env {
-    String(String),
+    InStringExpression(InString),
+    Map(std::collections::HashMap<String, String>),
 }
 
-impl Env {
-    /// Returns true if the string is a valid expression
-    pub fn string_expression(s: &str) -> Result<Self, Error> {
-        if RE.is_match(s) {
-            Ok(Env::String(s.to_string()))
-        } else {
-            Err(error_expression!(s))
-        }
+impl FromStr for Env {
+    type Err = serde_yaml::Error;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        from_str::<InString>(s).map(Env::InStringExpression)
     }
 }
 
 struct EnvVisitor;
 
-impl<'de> Visitor<'de> for EnvVisitor {
+impl<'de> serde::de::Visitor<'de> for EnvVisitor {
     type Value = Env;
 
     fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
-        formatter.write_str("stringExpression or map of environment variables")
+        formatter.write_fmt(format_args!(
+            "a string matching {IN_STRING_PATTERN} or map...",
+        ))
     }
 
     fn visit_str<E>(self, v: &str) -> Result<Self::Value, E>
     where
         E: serde::de::Error,
     {
-        let val = Env::string_expression(v);
-        if val.is_ok() {
-            Ok(val.unwrap())
-        } else {
-            Err(val.map_err(serde::de::Error::custom).unwrap_err())
-        }
+        from_str::<InString>(v)
+            .map(Env::InStringExpression)
+            .map_err(|_| E::invalid_value(serde::de::Unexpected::Str(v), &self))
+    }
+
+    fn visit_map<A>(self, _: A) -> Result<Self::Value, A::Error>
+    where
+        A: serde::de::MapAccess<'de>,
+    {
+        todo!()
     }
 }
 
-impl<'de> Deserialize<'de> for Env {
-    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-    where
-        D: Deserializer<'de>,
-    {
-        deserializer.deserialize_string(EnvVisitor)
-    }
-}
-
-impl Serialize for Env {
-    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-    where
-        S: Serializer,
-    {
-        match self {
-            Env::String(s) => {
-                if RE.is_match(s) {
-                    serializer.serialize_str(s)
-                } else {
-                    Err(serde::ser::Error::custom(error_expression!(s)))
-                }
-            }
-        }
-    }
-}
+// impl<'de> Deserialize<'de> for Env {
+//     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+//         where
+//             D: Deserializer<'de>,
+//     {
+//         deserializer.deserialize_any(EnvVisitor)
+//     }
+// }
 
 #[cfg(test)]
 mod tests {
-    use super::*;
-    use crate::error_expression;
     use serde_yaml::{from_str, to_string};
+
+    use crate::must_in_string;
+
+    use super::*;
 
     #[test]
     fn deserialize_string_ok() {
         let e: Env = from_str("abc=${{ inputs.ABC }}").unwrap();
-        assert_eq!(e, Env::String("abc=${{ inputs.ABC }}".to_string()));
+        assert_eq!(
+            e,
+            Env::InStringExpression(must_in_string!("abc=${{ inputs.ABC }}"))
+        );
     }
 
     #[test]
     fn deserialize_string_err() {
-        let result = from_str::<Env>("abc=inputs.ABC").unwrap_err();
-        let x = error_expression!("abc=inputs.ABC");
-        assert_eq!(result.to_string(), x.to_string());
+        let result = from_str::<Env>("x=y").unwrap_err();
+        assert_eq!(
+            result.to_string(),
+            format!("invalid value: string \"x=y\", expected a string matching {IN_STRING_PATTERN} or map...")
+        );
     }
 
     #[test]
     fn serialize_string_ok() {
-        let e: String = to_string(&Env::String("abc=${{ inputs.ABC }}".to_string()))
-            .unwrap()
-            .trim()
-            .to_string();
+        let e: String = to_string(&Env::InStringExpression(must_in_string!(
+            "abc=${{ inputs.ABC }}"
+        )))
+        .unwrap()
+        .trim()
+        .to_string();
         assert_eq!(e, "abc=${{ inputs.ABC }}");
-    }
-
-    #[test]
-    fn serialize_string_err() {
-        let result = to_string(&Env::String("abc=inputs.ABC".to_string())).unwrap_err();
-        assert_eq!(
-            result.to_string(),
-            error_expression!("abc=inputs.ABC").to_string()
-        );
     }
 }

@@ -2,6 +2,7 @@
 resolver = "2"
 members = [
     "act-core",
+    "act-derive",
 ]
 
 [package]
