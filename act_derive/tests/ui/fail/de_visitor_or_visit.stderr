@@ -1,0 +1,5 @@
+error: either `visit` or `visitor` must be specified in #[act(...)] attribute
+ --> tests/ui/fail/de_visitor_or_visit.rs:7:8
+  |
+7 | struct VisitorOrVisit;
+  |        ^^^^^^^^^^^^^^

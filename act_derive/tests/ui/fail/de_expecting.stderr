@@ -1,0 +1,22 @@
+error[E0277]: the trait bound `MissingExpecting: Expecting` is not satisfied
+ --> tests/ui/fail/de_expecting.rs:4:10
+  |
+4 | #[derive(Deserialize)]
+  |          ^^^^^^^^^^^ the trait `Expecting` is not implemented for `MissingExpecting`
+  |
+  = note: this error originates in the derive macro `Deserialize` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0599]: no function or associated item named `expecting` found for struct `MissingExpecting` in the current scope
+ --> tests/ui/fail/de_expecting.rs:4:10
+  |
+4 | #[derive(Deserialize)]
+  |          ^^^^^^^^^^^ function or associated item not found in `MissingExpecting`
+5 | #[act(visit = ["str"])]
+6 | struct MissingExpecting;
+  | ----------------------- function or associated item `expecting` not found for this struct
+  |
+  = help: items from traits can only be used if the trait is implemented and in scope
+  = note: the following traits define an item `expecting`, perhaps you need to implement one of them:
+          candidate #1: `Visitor`
+          candidate #2: `Expecting`
+  = note: this error originates in the derive macro `Deserialize` (in Nightly builds, run with -Z macro-backtrace for more info)

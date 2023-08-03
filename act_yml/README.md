@@ -1,4 +1,4 @@
-# act-core
+# act_yml
 
 Core traits and types necessary for interacting with GitHub actions and workflows.
 Based on [schema/workflow] and [schema/actions] JSON schema.
@@ -9,7 +9,7 @@ This crate is always re-exported from `act-lint`
 
 ## Docs
 
-See the **[act-core API Docs](https://docs.rs/act-core/)**
+See the **[act_yml API Docs](https://docs.rs/act_yml/)**
 
 ## Development
 

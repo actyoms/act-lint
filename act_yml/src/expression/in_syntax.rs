@@ -2,8 +2,8 @@ use std::fmt;
 
 use lazy_static::lazy_static;
 use regex::Regex;
-use serde::{Deserialize, Deserializer, Serialize};
 use serde::de::{Error as DeError, Unexpected, Visitor};
+use serde::{Deserialize, Deserializer, Serialize};
 
 use crate::{Error, ExpressionError};
 
@@ -78,8 +78,7 @@ impl<'de> Visitor<'de> for InSyntaxVisitor {
     where
         E: DeError,
     {
-        InSyntax::new(v)
-            .map_err(|_| E::invalid_value(Unexpected::Str(v), &self))
+        InSyntax::new(v).map_err(|_| E::invalid_value(Unexpected::Str(v), &self))
     }
 }
 

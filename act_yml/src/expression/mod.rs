@@ -1,7 +1,7 @@
 use std::fmt;
 
-use serde::{Deserialize, Deserializer, Serialize};
 use serde::de::{EnumAccess, Error, Visitor};
+use serde::{Deserialize, Deserializer, Serialize};
 
 pub use in_string::InString;
 pub use in_syntax::InSyntax;
@@ -68,9 +68,9 @@ impl<'de> Visitor<'de> for ExpressionVisitor {
         E: Error,
     {
         let x = Expression::string_only(v)
-                .ok()
-                .or_else(|| Expression::in_syntax(v).ok())
-                .or_else(|| Expression::in_string(v).ok());
+            .ok()
+            .or_else(|| Expression::in_syntax(v).ok())
+            .or_else(|| Expression::in_string(v).ok());
         if let Some(x) = x {
             Ok(x)
         } else {
@@ -154,7 +154,9 @@ mod tests {
     fn deserialize_err() {
         assert_eq!(
             from_str::<Expression>("abc ${{").unwrap_err().to_string(),
-            format!(r#"invalid value: string "abc ${{{{", expected a expression string without "${{{{" or a expression string matching one of {IN_BRACE_PATTERN} or {IN_STRING_PATTERN}"#)
+            format!(
+                r#"invalid value: string "abc ${{{{", expected a expression string without "${{{{" or a expression string matching one of {IN_BRACE_PATTERN} or {IN_STRING_PATTERN}"#
+            )
         );
     }
 

@@ -3,8 +3,8 @@ use std::str::FromStr;
 
 use lazy_static::lazy_static;
 use regex::Regex;
-use serde::{Deserialize, Deserializer, Serialize};
 use serde::de::{Error as DeError, Unexpected, Visitor};
+use serde::{Deserialize, Deserializer, Serialize};
 
 use crate::{Error, ExpressionError};
 
@@ -87,8 +87,7 @@ impl<'de> Visitor<'de> for InStringVisitor {
     where
         E: DeError,
     {
-        InString::new(v)
-            .map_err(|_| E::invalid_value(Unexpected::Str(v), &self))
+        InString::new(v).map_err(|_| E::invalid_value(Unexpected::Str(v), &self))
     }
 }
 

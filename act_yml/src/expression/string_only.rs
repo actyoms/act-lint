@@ -1,7 +1,7 @@
 use std::fmt;
 
-use serde::{Deserialize, Deserializer, Serialize};
 use serde::de::{Error as DeError, Unexpected, Visitor};
+use serde::{Deserialize, Deserializer, Serialize};
 
 use crate::{Error, ExpressionError};
 
@@ -51,8 +51,7 @@ impl<'de> Visitor<'de> for StringOnlyVisitor {
     where
         E: DeError,
     {
-        StringOnly::new(v)
-            .map_err(|_| E::invalid_value(Unexpected::Str(v), &self))
+        StringOnly::new(v).map_err(|_| E::invalid_value(Unexpected::Str(v), &self))
     }
 }
 
