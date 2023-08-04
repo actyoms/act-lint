@@ -1,7 +1,6 @@
-use act_derive::Deserialize;
-#[allow(unused_imports)]
-use act_trait::Expecting;
 use std::str::FromStr;
+
+use act_derive::Deserialize;
 
 #[derive(Deserialize)]
 #[act(expecting = "something", visit = ["str"])]

@@ -19,3 +19,4 @@ serde = { version = "1.0.180", features = ["derive"] }
 syn = { version = "2.0.28", features = ["full", "extra-traits"] }
 trybuild = { version = "1.0.82", features = ["diff"] }
 act_trait = { path = "../act_trait" }
+act_macrons = { path = "../act_macrons" }

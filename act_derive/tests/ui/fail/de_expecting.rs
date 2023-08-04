@@ -1,5 +1,6 @@
-use act_derive::Deserialize;
 use std::str::FromStr;
+
+use act_derive::Deserialize;
 
 #[derive(Deserialize)]
 #[act(visit = ["str"])]

@@ -1,9 +1,7 @@
 use act_derive::Deserialize;
-#[allow(unused_imports)]
-use act_trait::Expecting;
 
 #[derive(Deserialize)]
-#[act(expecting = "something", visit = ["str", "map"])]
+#[act(expecting = "something", visit = ["str", "map", "number", "bool"])]
 struct MissingVisitImpl;
 
 fn main() {}
