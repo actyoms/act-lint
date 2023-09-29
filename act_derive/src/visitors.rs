@@ -117,7 +117,7 @@ pub(crate) fn impl_visit_u64(name: &Ident, need: bool) -> proc_macro2::TokenStre
 
 // struct Vis;
 //
-// impl<'de> Visitor<'de>  for Vis {
+// impl<'de> serde::de::Visitor<'de>  for Vis {
 //     type Value = ();
 //
 //     fn expecting(&self, formatter: &mut Formatter) -> std::fmt::Result {

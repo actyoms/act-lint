@@ -5,7 +5,7 @@ use serde_yaml::from_str;
 
 use act_derive::Deserialize;
 use act_trait::from::FromMap;
-use act_trait::Expecting;
+use act_trait::{Error, Expecting};
 
 #[allow(unused_imports)]
 use crate::expression::{InString, IN_STRING_PATTERN};
@@ -48,6 +48,19 @@ impl FromStr for Env {
     }
 }
 
+impl From<InString> for Env {
+    fn from(value: InString) -> Self {
+        Env::InStringExpression(value)
+    }
+}
+
+impl From<Result<InString, Error>> for Env {
+    fn from(value: Result<InString, Error>) -> Self {
+        let value = value.unwrap();
+        Env::InStringExpression(value)
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use serde_yaml::{from_str, to_string};
@@ -57,12 +70,7 @@ mod tests {
     #[test]
     fn deserialize_string_ok() {
         let e: Env = from_str("abc=${{ inputs.ABC }}").unwrap();
-        assert_eq!(
-            e,
-            InString::new("abc=${{ inputs.ABC }}")
-                .map(Env::InStringExpression)
-                .unwrap()
-        );
+        assert_eq!(e, InString::new("abc=${{ inputs.ABC }}").into());
     }
 
     #[test]

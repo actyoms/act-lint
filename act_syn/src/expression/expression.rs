@@ -19,7 +19,7 @@ pub static IN_STRING_PATTERN: &str = r#"^.*\$\{\{(.|[\r\n])*\}\}.*$"#;
 pub enum Expression {
     /// A expression string without `${{`
     StringOnly(StringOnly),
-    /// A string that should match `^.*\$\{\{(.|[\r\n])*\}\}.*$`
+    /// A string that should match `^\$\{\{(.|[\r\n])*\}\}$`
     InSyntax(InSyntax),
     /// A string that should match `^.*\$\{\{(.|[\r\n])*\}\}.*$`
     InString(InString),
