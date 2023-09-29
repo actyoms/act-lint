@@ -1,0 +1,22 @@
+[package]
+name = "act_derive"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+proc-macro = true
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[[test]]
+name = "ui"
+path = "tests/tests.rs"
+
+[dependencies]
+attribute-derive = { version = "0.6.1", features = ["syn-full"] }
+proc-macro2 = "1.0.66"
+quote = "1.0.32"
+serde = { version = "1.0.180", features = ["derive"] }
+syn = { version = "2.0.28", features = ["full", "extra-traits"] }
+trybuild = { version = "1.0.82", features = ["diff"] }
+act_trait = { path = "../act_trait" }
+act_macrons = { path = "../act_macrons" }

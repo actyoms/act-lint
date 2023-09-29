@@ -1,0 +1,86 @@
+error[E0599]: no function or associated item named `from_bool` found for struct `MissingVisitImpl` in the current scope
+ --> tests/ui/fail/de_visit.rs:3:10
+  |
+3 | #[derive(Deserialize)]
+  |          ^^^^^^^^^^^ function or associated item not found in `MissingVisitImpl`
+4 | #[act(expecting = "something", visit = ["str", "map", "number", "bool"])]
+5 | struct MissingVisitImpl;
+  | ----------------------- function or associated item `from_bool` not found for this struct
+  |
+  = help: items from traits can only be used if the trait is implemented and in scope
+  = note: the following trait defines an item `from_bool`, perhaps you need to implement it:
+          candidate #1: `FromBool`
+  = note: this error originates in the derive macro `Deserialize` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0599]: no function or associated item named `from_f64` found for struct `MissingVisitImpl` in the current scope
+ --> tests/ui/fail/de_visit.rs:3:10
+  |
+3 | #[derive(Deserialize)]
+  |          ^^^^^^^^^^^ function or associated item not found in `MissingVisitImpl`
+4 | #[act(expecting = "something", visit = ["str", "map", "number", "bool"])]
+5 | struct MissingVisitImpl;
+  | ----------------------- function or associated item `from_f64` not found for this struct
+  |
+  = help: items from traits can only be used if the trait is implemented and in scope
+  = note: the following traits define an item `from_f64`, perhaps you need to implement one of them:
+          candidate #1: `FromF64`
+          candidate #2: `FromNumber`
+  = note: this error originates in the derive macro `Deserialize` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0599]: no function or associated item named `from_i64` found for struct `MissingVisitImpl` in the current scope
+ --> tests/ui/fail/de_visit.rs:3:10
+  |
+3 | #[derive(Deserialize)]
+  |          ^^^^^^^^^^^ function or associated item not found in `MissingVisitImpl`
+4 | #[act(expecting = "something", visit = ["str", "map", "number", "bool"])]
+5 | struct MissingVisitImpl;
+  | ----------------------- function or associated item `from_i64` not found for this struct
+  |
+  = help: items from traits can only be used if the trait is implemented and in scope
+  = note: the following traits define an item `from_i64`, perhaps you need to implement one of them:
+          candidate #1: `FromI64`
+          candidate #2: `FromNumber`
+  = note: this error originates in the derive macro `Deserialize` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0599]: no function or associated item named `from_map` found for struct `MissingVisitImpl` in the current scope
+ --> tests/ui/fail/de_visit.rs:3:10
+  |
+3 | #[derive(Deserialize)]
+  |          ^^^^^^^^^^^ function or associated item not found in `MissingVisitImpl`
+4 | #[act(expecting = "something", visit = ["str", "map", "number", "bool"])]
+5 | struct MissingVisitImpl;
+  | ----------------------- function or associated item `from_map` not found for this struct
+  |
+  = help: items from traits can only be used if the trait is implemented and in scope
+  = note: the following trait defines an item `from_map`, perhaps you need to implement it:
+          candidate #1: `FromMap`
+  = note: this error originates in the derive macro `Deserialize` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0599]: no function or associated item named `from_str` found for struct `MissingVisitImpl` in the current scope
+ --> tests/ui/fail/de_visit.rs:3:10
+  |
+3 | #[derive(Deserialize)]
+  |          ^^^^^^^^^^^ function or associated item not found in `MissingVisitImpl`
+4 | #[act(expecting = "something", visit = ["str", "map", "number", "bool"])]
+5 | struct MissingVisitImpl;
+  | ----------------------- function or associated item `from_str` not found for this struct
+  |
+  = help: items from traits can only be used if the trait is implemented and in scope
+  = note: the following trait defines an item `from_str`, perhaps you need to implement it:
+          candidate #1: `FromStr`
+  = note: this error originates in the derive macro `Deserialize` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0599]: no function or associated item named `from_u64` found for struct `MissingVisitImpl` in the current scope
+ --> tests/ui/fail/de_visit.rs:3:10
+  |
+3 | #[derive(Deserialize)]
+  |          ^^^^^^^^^^^ function or associated item not found in `MissingVisitImpl`
+4 | #[act(expecting = "something", visit = ["str", "map", "number", "bool"])]
+5 | struct MissingVisitImpl;
+  | ----------------------- function or associated item `from_u64` not found for this struct
+  |
+  = help: items from traits can only be used if the trait is implemented and in scope
+  = note: the following traits define an item `from_u64`, perhaps you need to implement one of them:
+          candidate #1: `FromNumber`
+          candidate #2: `FromU64`
+  = note: this error originates in the derive macro `Deserialize` (in Nightly builds, run with -Z macro-backtrace for more info)

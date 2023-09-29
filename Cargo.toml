@@ -1,7 +1,10 @@
 [workspace]
 resolver = "2"
 members = [
-    "act-core",
+    "act_syn",
+    "act_derive",
+    "act_trait",
+    "act_macrons",
 ]
 
 [package]

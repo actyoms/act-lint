@@ -8,7 +8,7 @@ mod cmd;
 #[command(author, version, about, long_about = None)]
 #[command(arg_required_else_help = true, subcommand_required = true)]
 #[command(
-help_template = "{usage-heading} {usage} \n {about-section} \n\n{all-args} {tab}\n\nVersion: {version} \nAuthor: {author-with-newline}"
+    help_template = "{usage-heading} {usage} \n {about-section} \n\n{all-args} {tab}\n\nVersion: {version} \nAuthor: {author-with-newline}"
 )]
 struct Cli {
     #[command(subcommand)]
